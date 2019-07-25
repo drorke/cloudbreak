@@ -25,6 +25,8 @@ public class AzureProperties {
 
     private final Network network = new Network();
 
+    private final SdxCloudstorage sdxCloudstorage = new SdxCloudstorage();
+
     public String getAvailabilityZone() {
         return availabilityZone;
     }
@@ -71,6 +73,10 @@ public class AzureProperties {
 
     public Network getNetwork() {
         return network;
+    }
+
+    public SdxCloudstorage getSdxCloudstorage() {
+        return sdxCloudstorage;
     }
 
     public static class Credential {
@@ -238,6 +244,29 @@ public class AzureProperties {
 
         public void setNoPublicIp(Boolean noPublicIp) {
             this.noPublicIp = noPublicIp;
+        }
+    }
+
+    public static class SdxCloudstorage {
+
+        private String fileSystemType;
+
+        private String locationName;
+
+        public String getFileSystemType() {
+            return fileSystemType;
+        }
+
+        public void setFileSystemType(String fileSystemType) {
+            this.fileSystemType = fileSystemType;
+        }
+
+        public String getLocationName() {
+            return locationName;
+        }
+
+        public void setLocationName(String locationName) {
+            this.locationName = locationName;
         }
     }
 }

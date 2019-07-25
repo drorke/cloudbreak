@@ -23,6 +23,7 @@ import com.sequenceiq.it.cloudbreak.dto.AbstractSdxTestDto;
 import com.sequenceiq.it.cloudbreak.dto.environment.EnvironmentTestDto;
 import com.sequenceiq.it.cloudbreak.util.ResponseUtil;
 import com.sequenceiq.sdx.api.endpoint.SdxEndpoint;
+import com.sequenceiq.sdx.api.model.SdxCloudStorageRequest;
 import com.sequenceiq.sdx.api.model.SdxClusterRequest;
 import com.sequenceiq.sdx.api.model.SdxClusterResponse;
 import com.sequenceiq.sdx.api.model.SdxClusterShape;
@@ -47,8 +48,22 @@ public class SdxTestDto extends AbstractSdxTestDto<SdxClusterRequest, SdxCluster
         withName(resourceProperyProvider().getName())
                 .withEnvironment(getTestContext().get(EnvironmentTestDto.class).getName())
                 .withClusterShape(getCloudProvider().getClusterShape())
-                .withTags(getCloudProvider().getTags());
+                .withTags(getCloudProvider().getTags())
+                .withCloudStorage(getTestContext().get(SdxCloudStorageTestDto.class).getRequest());
         return getCloudProvider().sdx(this);
+    }
+
+    public SdxTestDto withCloudStorage() {
+        SdxCloudStorageTestDto sdxCloudStorage = getTestContext().get(SdxCloudStorageTestDto.class);
+        if (sdxCloudStorage == null) {
+            throw new IllegalArgumentException("SDX Cloud Storage does not exist!");
+        }
+        return withCloudStorage(sdxCloudStorage.getRequest());
+    }
+
+    public SdxTestDto withCloudStorage(SdxCloudStorageRequest cloudStorage) {
+        getRequest().setCloudStorage(cloudStorage);
+        return this;
     }
 
     public SdxTestDto withTags(Map<String, String> tags) {

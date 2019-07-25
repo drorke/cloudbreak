@@ -29,6 +29,8 @@ public class AwsProperties {
 
     private final Baseimage baseimage = new Baseimage();
 
+    private final SdxCloudstorage sdxCloudstorage = new SdxCloudstorage();
+
     public String getAvailabilityZone() {
         return availabilityZone;
     }
@@ -95,6 +97,10 @@ public class AwsProperties {
 
     public Baseimage getBaseimage() {
         return baseimage;
+    }
+
+    public SdxCloudstorage getSdxCloudstorage() {
+        return sdxCloudstorage;
     }
 
     public static class Instance {
@@ -265,6 +271,29 @@ public class AwsProperties {
             public void setBlueprints(List<String> blueprints) {
                 this.blueprints = blueprints;
             }
+        }
+    }
+
+    public static class SdxCloudstorage {
+
+        private String baseLocation;
+
+        private String fileSystemType;
+
+        public String getBaseLocation() {
+            return baseLocation;
+        }
+
+        public void setBaseLocation(String baseLocation) {
+            this.baseLocation = baseLocation;
+        }
+
+        public String getFileSystemType() {
+            return fileSystemType;
+        }
+
+        public void setFileSystemType(String fileSystemType) {
+            this.fileSystemType = fileSystemType;
         }
     }
 }
