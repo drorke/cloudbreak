@@ -18,10 +18,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.sequenceiq.cloudbreak.api.endpoint.v4.common.ResourceStatus;
+import com.sequenceiq.cloudbreak.api.endpoint.v4.database.base.DatabaseType;
 import com.sequenceiq.cloudbreak.aspect.Measure;
 import com.sequenceiq.cloudbreak.cloud.model.StackInputs;
 import com.sequenceiq.cloudbreak.cluster.api.DatalakeConfigApi;
 import com.sequenceiq.cloudbreak.common.json.Json;
+import com.sequenceiq.cloudbreak.domain.RDSConfig;
 import com.sequenceiq.cloudbreak.domain.stack.Stack;
 import com.sequenceiq.cloudbreak.domain.stack.cluster.Cluster;
 import com.sequenceiq.cloudbreak.domain.stack.cluster.DatalakeResources;
@@ -148,7 +150,17 @@ public class SharedServiceConfigProvider {
                             .stream()
                             .filter(rdsConfig -> ResourceStatus.USER_MANAGED == rdsConfig.getStatus())
                             .collect(toSet()));
+
+            requestedCluster.getRdsConfigs().addAll(
+                    datalakeResources.getRdsConfigs()
+                            .stream()
+                            .filter(rdsConfig -> isHiveMetastoreDatabaseWhichIsDefault(rdsConfig))
+                            .collect(toSet()));
         }
+    }
+
+    private boolean isHiveMetastoreDatabaseWhichIsDefault(RDSConfig rdsConfig) {
+        return ResourceStatus.DEFAULT.equals(rdsConfig.getStatus()) && DatabaseType.HIVE.name().equals(rdsConfig.getType());
     }
 
     private Stack queryStack(Long sourceClusterId, Optional<String> sourceClusterName, User user, Workspace workspace) {
