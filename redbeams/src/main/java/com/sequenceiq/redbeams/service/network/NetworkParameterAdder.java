@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.sequenceiq.environment.api.v1.environment.model.response.EnvironmentNetworkResponse;
+import com.sequenceiq.environment.api.v1.environment.model.response.DetailedEnvironmentResponse;
 
 @Service
 public class NetworkParameterAdder {
@@ -21,10 +21,9 @@ public class NetworkParameterAdder {
         return parameters;
     }
 
-    public Map<String, Object> addVpcParameters(Map<String, Object> parameters, EnvironmentNetworkResponse environmentNetworkResponse) {
-        parameters.put(VPC_ID, String.join(",", environmentNetworkResponse.getAws().getVpcId()));
-        parameters.put(VPC_CIDR, environmentNetworkResponse.getNetworkCidr());
+    public Map<String, Object> addVpcParameters(Map<String, Object> parameters, DetailedEnvironmentResponse environmentResponse) {
+        parameters.put(VPC_CIDR, environmentResponse.getSecurityAccess().getCidr());
+        parameters.put(VPC_ID, environmentResponse.getNetwork().getAws().getVpcId());
         return parameters;
     }
-
 }

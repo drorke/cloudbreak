@@ -158,7 +158,7 @@ public class AllocateDatabaseServerV4RequestToDBStackConverter {
                 ? providerParameterCalculator.get(source).asMap()
                 : getNetworkFromEnvironment(environmentResponse.getNetwork());
 
-        networkParameterAdder.addVpcParameters(parameters, environmentResponse.getNetwork());
+        networkParameterAdder.addVpcParameters(parameters, environmentResponse);
 
         if (parameters != null) {
             try {
@@ -184,7 +184,7 @@ public class AllocateDatabaseServerV4RequestToDBStackConverter {
         server.setRootPassword(source.getRootUserPassword() != null ? source.getRootUserPassword() : userGeneratorService.generatePassword()
         );
         server.setPort(source.getPort());
-        server.setSecurityGroup(buildSecurityGroup(source.getSecurityGroup(), securityAccessResponse));
+        server.setSecurityGroup(buildExistingSecurityGroup(source.getSecurityGroup(), securityAccessResponse));
 
         Map<String, Object> parameters = providerParameterCalculator.get(source).asMap();
         if (parameters != null) {
@@ -198,7 +198,14 @@ public class AllocateDatabaseServerV4RequestToDBStackConverter {
         return server;
     }
 
-    private SecurityGroup buildSecurityGroup(SecurityGroupV4Request source, SecurityAccessResponse securityAccessResponse) {
+    /**
+     *     Redbeams saves security group id if it is provided in the request or if the environment provides a default security group.
+     *     If none of them are filled in, then a custom security group is created later in spi.
+     * @param source - the request
+     * @param securityAccessResponse - environment data
+     * @return returns the saved security groups. If none is specified, then an empty security gorup is returned.
+     */
+    private SecurityGroup buildExistingSecurityGroup(SecurityGroupV4Request source, SecurityAccessResponse securityAccessResponse) {
         SecurityGroup securityGroup = new SecurityGroup();
         if (source != null) {
             securityGroup.setSecurityGroupIds(source.getSecurityGroupIds());
