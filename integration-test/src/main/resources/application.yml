@@ -61,7 +61,9 @@ integrationtest:
         imageId: 963f81ae-efd1-4bfb-7f91-4aa357950c02
         blueprints:
           - "CDP 1.0 - Data Science: Apache Spark, Apache Hive"
-    sdxCloudstorage:
+    cloudstorage:
+      s3:
+        instanceProfile:
       baseLocation:
       fileSystemType:
 
@@ -91,7 +93,6 @@ integrationtest:
       accountKey:
       accountName:
       locationName:
-    sdxCloudstorage:
       baseLocation:
       fileSystemType:
 
@@ -114,9 +115,6 @@ integrationtest:
       volumeSize: 100
       volumeCount: 1
       volumeType: pd-standard
-    sdxCloudstorage:
-      baseLocation:
-      fileSystemType:
 
   # openstack parameters
   openstack:

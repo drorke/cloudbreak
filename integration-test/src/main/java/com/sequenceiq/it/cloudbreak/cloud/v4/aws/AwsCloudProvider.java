@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 import com.sequenceiq.cloudbreak.api.endpoint.v4.stacks.base.parameter.network.AwsNetworkV4Parameters;
 import com.sequenceiq.cloudbreak.api.endpoint.v4.stacks.base.parameter.stack.AwsStackV4Parameters;
 import com.sequenceiq.cloudbreak.common.mappable.CloudPlatform;
+import com.sequenceiq.common.api.cloudstorage.old.S3CloudStorageV1Parameters;
 import com.sequenceiq.distrox.api.v1.distrox.model.AwsDistroXV1Parameters;
-import com.sequenceiq.distrox.api.v1.distrox.model.cluster.storage.parameter.S3CloudStorageV1Parameters;
 import com.sequenceiq.distrox.api.v1.distrox.model.network.AwsNetworkV1Parameters;
 import com.sequenceiq.environment.api.v1.credential.model.parameters.aws.AwsCredentialParameters;
 import com.sequenceiq.environment.api.v1.credential.model.parameters.aws.KeyBasedParameters;
@@ -221,10 +221,17 @@ public class AwsCloudProvider extends AbstractCloudProvider {
     }
 
     @Override
-    public SdxCloudStorageTestDto sdxStorage(SdxCloudStorageTestDto sdxCloudStorage) {
+    public SdxCloudStorageTestDto cloudStorage(SdxCloudStorageTestDto cloudStorage) {
         S3CloudStorageV1Parameters s3CloudStorageV1Parameters = new S3CloudStorageV1Parameters();
-        return sdxCloudStorage
+        return cloudStorage
                 .withFileSystemType(s3CloudStorageV1Parameters.getType())
-                .withBaseLocation(awsProperties.getSdxCloudstorage().getBaseLocation());
+                .withBaseLocation(awsProperties.getCloudstorage().getBaseLocation())
+                .withS3(s3CloudStorageParameters());
+    }
+
+    public S3CloudStorageV1Parameters s3CloudStorageParameters() {
+        S3CloudStorageV1Parameters s3CloudStorageV1Parameters = new S3CloudStorageV1Parameters();
+        s3CloudStorageV1Parameters.setInstanceProfile(awsProperties.getCloudstorage().getS3().getInstanceProfile());
+        return s3CloudStorageV1Parameters;
     }
 }

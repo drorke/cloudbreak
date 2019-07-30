@@ -152,7 +152,7 @@ public class OpenStackCloudProvider extends AbstractCloudProvider {
     }
 
     @Override
-    public SdxCloudStorageTestDto sdxStorage(SdxCloudStorageTestDto sdxCloudStorage) {
-        return sdxCloudStorage;
+    public SdxCloudStorageTestDto cloudStorage(SdxCloudStorageTestDto cloudStorage) {
+        return cloudStorage;
     }
 }

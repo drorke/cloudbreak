@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import com.sequenceiq.cloudbreak.api.endpoint.v4.stacks.base.parameter.network.GcpNetworkV4Parameters;
 import com.sequenceiq.cloudbreak.api.endpoint.v4.stacks.base.parameter.stack.GcpStackV4Parameters;
 import com.sequenceiq.cloudbreak.common.mappable.CloudPlatform;
-import com.sequenceiq.common.api.cloudstorage.GcsCloudStorageV1Parameters;
 import com.sequenceiq.environment.api.v1.credential.model.parameters.gcp.GcpCredentialParameters;
 import com.sequenceiq.environment.api.v1.credential.model.parameters.gcp.JsonParameters;
 import com.sequenceiq.environment.api.v1.credential.model.parameters.gcp.P12Parameters;
@@ -163,10 +162,7 @@ public class GcpCloudProvider extends AbstractCloudProvider {
     }
 
     @Override
-    public SdxCloudStorageTestDto sdxStorage(SdxCloudStorageTestDto sdxCloudStorage) {
-        GcsCloudStorageV1Parameters gcsCloudStorageV1Parameters = new GcsCloudStorageV1Parameters();
-        return sdxCloudStorage
-                .withFileSystemType(gcsCloudStorageV1Parameters.getType())
-                .withBaseLocation(gcpProperties.getSdxCloudstorage().getLocationName());
+    public SdxCloudStorageTestDto cloudStorage(SdxCloudStorageTestDto cloudStorage) {
+        return cloudStorage;
     }
 }

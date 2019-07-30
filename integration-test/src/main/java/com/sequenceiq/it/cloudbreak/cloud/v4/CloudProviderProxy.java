@@ -128,7 +128,7 @@ public class CloudProviderProxy implements CloudProvider {
     }
 
     @Override
-    public SdxCloudStorageTestDto sdxStorage(SdxCloudStorageTestDto sdxStorage) { return delegate.sdxStorage(sdxStorage); }
+    public SdxCloudStorageTestDto cloudStorage(SdxCloudStorageTestDto cloudStorage) { return delegate.cloudStorage(cloudStorage); }
 
     @Override
     public VolumeV4TestDto attachedVolume(VolumeV4TestDto volume) {

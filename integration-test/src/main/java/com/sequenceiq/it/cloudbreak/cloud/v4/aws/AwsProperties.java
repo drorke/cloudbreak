@@ -29,7 +29,7 @@ public class AwsProperties {
 
     private final Baseimage baseimage = new Baseimage();
 
-    private final SdxCloudstorage sdxCloudstorage = new SdxCloudstorage();
+    private final Cloudstorage cloudstorage = new Cloudstorage();
 
     public String getAvailabilityZone() {
         return availabilityZone;
@@ -99,8 +99,8 @@ public class AwsProperties {
         return baseimage;
     }
 
-    public SdxCloudstorage getSdxCloudstorage() {
-        return sdxCloudstorage;
+    public Cloudstorage getCloudstorage() {
+        return cloudstorage;
     }
 
     public static class Instance {
@@ -274,11 +274,31 @@ public class AwsProperties {
         }
     }
 
-    public static class SdxCloudstorage {
+    public static class Cloudstorage {
+
+        private final S3 s3 = new S3();
 
         private String baseLocation;
 
         private String fileSystemType;
+
+        private String instanceProfile;
+
+        public S3 getS3() {
+            return s3;
+        }
+
+        public static class S3 {
+            private String instanceProfile;
+
+            public String getInstanceProfile() {
+                return instanceProfile;
+            }
+
+            public void setInstanceProfile(String instanceProfile) {
+                this.instanceProfile = instanceProfile;
+            }
+        }
 
         public String getBaseLocation() {
             return baseLocation;

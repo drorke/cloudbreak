@@ -66,7 +66,7 @@ public interface CloudProvider {
 
     SdxInternalTestDto sdxInternal(SdxInternalTestDto sdxInternal);
 
-    SdxCloudStorageTestDto sdxStorage(SdxCloudStorageTestDto sdxStorage);
+    SdxCloudStorageTestDto cloudStorage(SdxCloudStorageTestDto cloudStorage);
 
     String getSubnetCIDR();
 

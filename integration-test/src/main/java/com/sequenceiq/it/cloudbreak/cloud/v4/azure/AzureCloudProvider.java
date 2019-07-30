@@ -198,13 +198,13 @@ public class AzureCloudProvider extends AbstractCloudProvider {
 
 
     @Override
-    public SdxCloudStorageTestDto sdxStorage(SdxCloudStorageTestDto sdxCloudStorage) {
+    public SdxCloudStorageTestDto cloudStorage(SdxCloudStorageTestDto cloudStorage) {
         AdlsCloudStorageV1Parameters adlsCloudStorageV1Parameters = new AdlsCloudStorageV1Parameters();
         AdlsGen2CloudStorageV1Parameters adlsGen2CloudStorageV1Parameters = new AdlsGen2CloudStorageV1Parameters();
         WasbCloudStorageV1Parameters wasbCloudStorageV1Parameters = new WasbCloudStorageV1Parameters();
         FileSystemType fileSystemType;
 
-        switch (azureProperties.getSdxCloudstorage().getFileSystemType()) {
+        switch (azureProperties.getCloudstorage().getFileSystemType()) {
             case "WASB":
                 fileSystemType = wasbCloudStorageV1Parameters.getType();
                 break;
@@ -219,8 +219,8 @@ public class AzureCloudProvider extends AbstractCloudProvider {
                 break;
         }
 
-        return sdxCloudStorage
+        return cloudStorage
                 .withFileSystemType(fileSystemType)
-                .withBaseLocation(azureProperties.getSdxCloudstorage().getLocationName());
+                .withBaseLocation(azureProperties.getCloudstorage().getLocationName());
     }
 }

@@ -42,7 +42,7 @@ public class AwsSdxTests extends AbstractE2ETest {
         String sdx = resourcePropertyProvider().getName();
 
         testContext
-                .given(sdx, SdxTestDto.class)
+                .given(sdx, SdxTestDto.class).withCloudStorage()
                 .when(sdxTestClient.create(), key(sdx))
                 .await(SDX_RUNNING)
                 .then((tc, testDto, client) -> sdxTestClient.delete().action(tc, testDto, client))

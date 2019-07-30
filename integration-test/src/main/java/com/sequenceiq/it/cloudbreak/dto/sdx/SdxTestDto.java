@@ -48,17 +48,16 @@ public class SdxTestDto extends AbstractSdxTestDto<SdxClusterRequest, SdxCluster
         withName(resourceProperyProvider().getName())
                 .withEnvironment(getTestContext().get(EnvironmentTestDto.class).getName())
                 .withClusterShape(getCloudProvider().getClusterShape())
-                .withTags(getCloudProvider().getTags())
-                .withCloudStorage(getTestContext().get(SdxCloudStorageTestDto.class).getRequest());
+                .withTags(getCloudProvider().getTags());
         return getCloudProvider().sdx(this);
     }
 
     public SdxTestDto withCloudStorage() {
-        SdxCloudStorageTestDto sdxCloudStorage = getTestContext().get(SdxCloudStorageTestDto.class);
-        if (sdxCloudStorage == null) {
+        SdxCloudStorageTestDto cloudStorage = getCloudProvider().cloudStorage(given(SdxCloudStorageTestDto.class));
+        if (cloudStorage == null) {
             throw new IllegalArgumentException("SDX Cloud Storage does not exist!");
         }
-        return withCloudStorage(sdxCloudStorage.getRequest());
+        return withCloudStorage(cloudStorage.getRequest());
     }
 
     public SdxTestDto withCloudStorage(SdxCloudStorageRequest cloudStorage) {
