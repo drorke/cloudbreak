@@ -25,6 +25,7 @@ import com.sequenceiq.cloudbreak.common.mappable.CloudPlatform;
 import com.sequenceiq.cloudbreak.template.TemplatePreparationObject;
 import com.sequenceiq.cloudbreak.template.TemplatePreparationObject.Builder;
 import com.sequenceiq.cloudbreak.template.filesystem.BaseFileSystemConfigurationsView;
+import com.sequenceiq.cloudbreak.template.views.AccountMappingView;
 
 public class KnoxIdBrokerConfigProviderTest {
 
@@ -107,8 +108,7 @@ public class KnoxIdBrokerConfigProviderTest {
     public void getRoleConfigWhenIdBrokerAndNoFileSystemAndAws() {
         TemplatePreparationObject tpo = new Builder()
                 .withCloudPlatform(CloudPlatform.AWS)
-                .withIdentityUserMapping(IDENTITY_USER_MAPPING)
-                .withIdentityGroupMapping(IDENTITY_GROUP_MAPPING)
+                .withAccountMappingView(new AccountMappingView(IDENTITY_GROUP_MAPPING, IDENTITY_USER_MAPPING))
                 .build();
 
         List<ApiClusterTemplateConfig> result = underTest.getRoleConfigs(IDBROKER, tpo);
@@ -126,8 +126,7 @@ public class KnoxIdBrokerConfigProviderTest {
     public void getRoleConfigWhenIdBrokerAndNoFileSystemAndAzure() {
         TemplatePreparationObject tpo = new Builder()
                 .withCloudPlatform(CloudPlatform.AZURE)
-                .withIdentityUserMapping(IDENTITY_USER_MAPPING)
-                .withIdentityGroupMapping(IDENTITY_GROUP_MAPPING)
+                .withAccountMappingView(new AccountMappingView(IDENTITY_GROUP_MAPPING, IDENTITY_USER_MAPPING))
                 .build();
 
         List<ApiClusterTemplateConfig> result = underTest.getRoleConfigs(IDBROKER, tpo);
@@ -145,8 +144,7 @@ public class KnoxIdBrokerConfigProviderTest {
     public void getRoleConfigWhenIdBrokerAndNoFileSystemAndGcp() {
         TemplatePreparationObject tpo = new Builder()
                 .withCloudPlatform(CloudPlatform.GCP)
-                .withIdentityUserMapping(IDENTITY_USER_MAPPING)
-                .withIdentityGroupMapping(IDENTITY_GROUP_MAPPING)
+                .withAccountMappingView(new AccountMappingView(IDENTITY_GROUP_MAPPING, IDENTITY_USER_MAPPING))
                 .build();
 
         List<ApiClusterTemplateConfig> result = underTest.getRoleConfigs(IDBROKER, tpo);
@@ -164,8 +162,7 @@ public class KnoxIdBrokerConfigProviderTest {
     public void getRoleConfigWhenIdBrokerAndNoFileSystemAndYarn() {
         TemplatePreparationObject tpo = new Builder()
                 .withCloudPlatform(CloudPlatform.YARN)
-                .withIdentityUserMapping(IDENTITY_USER_MAPPING)
-                .withIdentityGroupMapping(IDENTITY_GROUP_MAPPING)
+                .withAccountMappingView(new AccountMappingView(IDENTITY_GROUP_MAPPING, IDENTITY_USER_MAPPING))
                 .build();
 
         List<ApiClusterTemplateConfig> result = underTest.getRoleConfigs(IDBROKER, tpo);
@@ -200,8 +197,7 @@ public class KnoxIdBrokerConfigProviderTest {
         TemplatePreparationObject tpo = new Builder()
                 .withCloudPlatform(CloudPlatform.AWS)
                 .withFileSystemConfigurationView(fileSystemConfigurationsView)
-                .withIdentityUserMapping(IDENTITY_USER_MAPPING)
-                .withIdentityGroupMapping(IDENTITY_GROUP_MAPPING)
+                .withAccountMappingView(new AccountMappingView(IDENTITY_GROUP_MAPPING, IDENTITY_USER_MAPPING))
                 .build();
 
         List<ApiClusterTemplateConfig> result = underTest.getRoleConfigs(IDBROKER, tpo);
@@ -223,8 +219,7 @@ public class KnoxIdBrokerConfigProviderTest {
         TemplatePreparationObject tpo = new Builder()
                 .withCloudPlatform(CloudPlatform.AZURE)
                 .withFileSystemConfigurationView(fileSystemConfigurationsView)
-                .withIdentityUserMapping(IDENTITY_USER_MAPPING)
-                .withIdentityGroupMapping(IDENTITY_GROUP_MAPPING)
+                .withAccountMappingView(new AccountMappingView(IDENTITY_GROUP_MAPPING, IDENTITY_USER_MAPPING))
                 .build();
 
         List<ApiClusterTemplateConfig> result = underTest.getRoleConfigs(IDBROKER, tpo);
@@ -246,8 +241,7 @@ public class KnoxIdBrokerConfigProviderTest {
         TemplatePreparationObject tpo = new Builder()
                 .withCloudPlatform(CloudPlatform.AZURE)
                 .withFileSystemConfigurationView(fileSystemConfigurationsView)
-                .withIdentityUserMapping(IDENTITY_USER_MAPPING)
-                .withIdentityGroupMapping(IDENTITY_GROUP_MAPPING)
+                .withAccountMappingView(new AccountMappingView(IDENTITY_GROUP_MAPPING, IDENTITY_USER_MAPPING))
                 .build();
 
         List<ApiClusterTemplateConfig> result = underTest.getRoleConfigs(IDBROKER, tpo);
@@ -269,8 +263,7 @@ public class KnoxIdBrokerConfigProviderTest {
         TemplatePreparationObject tpo = new Builder()
                 .withCloudPlatform(CloudPlatform.AZURE)
                 .withFileSystemConfigurationView(fileSystemConfigurationsView)
-                .withIdentityUserMapping(IDENTITY_USER_MAPPING)
-                .withIdentityGroupMapping(IDENTITY_GROUP_MAPPING)
+                .withAccountMappingView(new AccountMappingView(IDENTITY_GROUP_MAPPING, IDENTITY_USER_MAPPING))
                 .build();
 
         List<ApiClusterTemplateConfig> result = underTest.getRoleConfigs(IDBROKER, tpo);
@@ -292,8 +285,7 @@ public class KnoxIdBrokerConfigProviderTest {
         TemplatePreparationObject tpo = new Builder()
                 .withCloudPlatform(CloudPlatform.AZURE)
                 .withFileSystemConfigurationView(fileSystemConfigurationsView)
-                .withIdentityUserMapping(IDENTITY_USER_MAPPING)
-                .withIdentityGroupMapping(IDENTITY_GROUP_MAPPING)
+                .withAccountMappingView(new AccountMappingView(IDENTITY_GROUP_MAPPING, IDENTITY_USER_MAPPING))
                 .build();
 
         List<ApiClusterTemplateConfig> result = underTest.getRoleConfigs(IDBROKER, tpo);
@@ -315,8 +307,7 @@ public class KnoxIdBrokerConfigProviderTest {
         TemplatePreparationObject tpo = new Builder()
                 .withCloudPlatform(CloudPlatform.GCP)
                 .withFileSystemConfigurationView(fileSystemConfigurationsView)
-                .withIdentityUserMapping(IDENTITY_USER_MAPPING)
-                .withIdentityGroupMapping(IDENTITY_GROUP_MAPPING)
+                .withAccountMappingView(new AccountMappingView(IDENTITY_GROUP_MAPPING, IDENTITY_USER_MAPPING))
                 .build();
 
         List<ApiClusterTemplateConfig> result = underTest.getRoleConfigs(IDBROKER, tpo);

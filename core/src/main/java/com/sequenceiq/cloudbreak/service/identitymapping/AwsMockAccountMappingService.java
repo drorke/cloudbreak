@@ -16,7 +16,7 @@ import com.sequenceiq.cloudbreak.converter.spi.CredentialToCloudCredentialConver
 import com.sequenceiq.cloudbreak.dto.credential.Credential;
 
 @Component
-public class AwsMockIdentityMappingService {
+public class AwsMockAccountMappingService {
 
     private static final String FIXED_IAM_ROLE = "arn:aws:iam::${accountId}:role/mock-idbroker-admin-role";
 
@@ -69,12 +69,12 @@ public class AwsMockIdentityMappingService {
     @Inject
     private CredentialToCloudCredentialConverter credentialConverter;
 
-    public Map<String, String> getIdentityGroupMapping(String region, Credential credential) {
+    public Map<String, String> getGroupMapping(String region, Credential credential) {
         String accountId = getAccountId(region, credential);
         return replaceAccountId(MOCK_IDBROKER_GROUP_MAPPING, accountId);
     }
 
-    public Map<String, String> getIdentityUserMapping(String region, Credential credential) {
+    public Map<String, String> getUserMapping(String region, Credential credential) {
         String accountId = getAccountId(region, credential);
         return replaceAccountId(MOCK_IDBROKER_USER_MAPPING, accountId);
     }
@@ -94,4 +94,5 @@ public class AwsMockIdentityMappingService {
                 .map(e -> Map.entry(e.getKey(), e.getValue().replace("${accountId}", accountId)))
                 .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
+
 }

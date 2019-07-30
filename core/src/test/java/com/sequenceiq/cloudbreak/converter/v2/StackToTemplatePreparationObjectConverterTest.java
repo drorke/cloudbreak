@@ -47,6 +47,8 @@ import com.sequenceiq.cloudbreak.converter.StackToTemplatePreparationObjectConve
 import com.sequenceiq.cloudbreak.core.bootstrap.service.container.postgres.PostgresConfigService;
 import com.sequenceiq.cloudbreak.domain.Blueprint;
 import com.sequenceiq.cloudbreak.domain.FileSystem;
+import com.sequenceiq.cloudbreak.domain.cloudstorage.AccountMapping;
+import com.sequenceiq.cloudbreak.domain.cloudstorage.CloudStorage;
 import com.sequenceiq.cloudbreak.domain.stack.Stack;
 import com.sequenceiq.cloudbreak.domain.stack.cluster.Cluster;
 import com.sequenceiq.cloudbreak.domain.stack.cluster.DatalakeResources;
@@ -64,12 +66,13 @@ import com.sequenceiq.cloudbreak.service.datalake.DatalakeResourcesService;
 import com.sequenceiq.cloudbreak.service.environment.EnvironmentClientService;
 import com.sequenceiq.cloudbreak.service.environment.credential.CredentialConverter;
 import com.sequenceiq.cloudbreak.service.hostgroup.HostGroupService;
-import com.sequenceiq.cloudbreak.service.identitymapping.AwsMockIdentityMappingService;
+import com.sequenceiq.cloudbreak.service.identitymapping.AwsMockAccountMappingService;
 import com.sequenceiq.cloudbreak.template.TemplatePreparationObject;
 import com.sequenceiq.cloudbreak.template.filesystem.BaseFileSystemConfigurationsView;
 import com.sequenceiq.cloudbreak.template.filesystem.FileSystemConfigurationProvider;
 import com.sequenceiq.cloudbreak.template.model.GeneralClusterConfigs;
 import com.sequenceiq.cloudbreak.template.model.HdfConfigs;
+import com.sequenceiq.cloudbreak.template.views.AccountMappingView;
 import com.sequenceiq.cloudbreak.template.views.BlueprintView;
 import com.sequenceiq.cloudbreak.template.views.SharedServiceConfigsView;
 import com.sequenceiq.common.api.cloudstorage.query.ConfigQueryEntries;
@@ -85,6 +88,10 @@ public class StackToTemplatePreparationObjectConverterTest {
     private static final String TEST_BLUEPRINT_TEXT = "{}";
 
     private static final String TEST_CLOUD_PLATFORM = "AWS";
+
+    private static final Map<String, String> MOCK_GROUP_MAPPING = Map.of("mockGroup", "mockGroupRole");
+
+    private static final Map<String, String> MOCK_USER_MAPPING = Map.of("mockUser", "mockUserRole");
 
     private static final Map<String, String> GROUP_MAPPING = Map.of("group", "groupRole");
 
@@ -168,7 +175,7 @@ public class StackToTemplatePreparationObjectConverterTest {
     private CredentialConverter credentialConverter;
 
     @Mock
-    private AwsMockIdentityMappingService awsIdentityMappingService;
+    private AwsMockAccountMappingService awsAccountMappingService;
 
     @Mock
     private CmCloudStorageConfigProvider cmCloudStorageConfigProvider;
@@ -201,8 +208,8 @@ public class StackToTemplatePreparationObjectConverterTest {
                 .build();
         when(environmentClientService.getByCrn(anyString())).thenReturn(environmentResponse);
         when(credentialConverter.convert(any(CredentialResponse.class))).thenReturn(credential);
-        when(awsIdentityMappingService.getIdentityGroupMapping(REGION, credential)).thenReturn(GROUP_MAPPING);
-        when(awsIdentityMappingService.getIdentityUserMapping(REGION, credential)).thenReturn(USER_MAPPING);
+        when(awsAccountMappingService.getGroupMapping(REGION, credential)).thenReturn(MOCK_GROUP_MAPPING);
+        when(awsAccountMappingService.getUserMapping(REGION, credential)).thenReturn(MOCK_USER_MAPPING);
         when(ldapConfigService.get(anyString())).thenReturn(Optional.empty());
     }
 
@@ -420,9 +427,32 @@ public class StackToTemplatePreparationObjectConverterTest {
     }
 
     @Test
-    public void testIdBrokerMappings() {
+    public void testMockAccountMappings() {
         TemplatePreparationObject result = underTest.convert(stackMock);
-        assertEquals(GROUP_MAPPING, result.getIdentityGroupMapping());
-        assertEquals(USER_MAPPING, result.getIdentityUserMapping());
+
+        AccountMappingView accountMappingView = result.getAccountMappingView();
+        assertNotNull(accountMappingView);
+        assertEquals(MOCK_GROUP_MAPPING, accountMappingView.getGroupMapping());
+        assertEquals(MOCK_USER_MAPPING, accountMappingView.getUserMapping());
     }
+
+    @Test
+    public void testStackInputAccountMappings() {
+        FileSystem sourceFileSystem = mock(FileSystem.class);
+        CloudStorage sourceCloudStorage = mock(CloudStorage.class);
+        when(sourceCluster.getFileSystem()).thenReturn(sourceFileSystem);
+        when(sourceFileSystem.getCloudStorage()).thenReturn(sourceCloudStorage);
+        AccountMapping accountMapping = new AccountMapping();
+        accountMapping.setGroupMapping(GROUP_MAPPING);
+        accountMapping.setUserMapping(USER_MAPPING);
+        when(sourceCloudStorage.getAccountMapping()).thenReturn(accountMapping);
+
+        TemplatePreparationObject result = underTest.convert(stackMock);
+
+        AccountMappingView accountMappingView = result.getAccountMappingView();
+        assertNotNull(accountMappingView);
+        assertEquals(GROUP_MAPPING, accountMappingView.getGroupMapping());
+        assertEquals(USER_MAPPING, accountMappingView.getUserMapping());
+    }
+
 }
