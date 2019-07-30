@@ -1,6 +1,7 @@
 package com.sequenceiq.cloudbreak.util;
 
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -25,6 +26,13 @@ public class NullUtil {
     public static <T, R> R getIfNotNull(T value, Function<T, R> consumer) {
         if (value != null) {
             return consumer.apply(value);
+        }
+        return null;
+    }
+
+    public static <T, R, U> U getIfNotNull(T firstArgument, R secondArgument, BiFunction<T, R, U> consumer) {
+        if (firstArgument != null && secondArgument != null) {
+            return consumer.apply(firstArgument, secondArgument);
         }
         return null;
     }

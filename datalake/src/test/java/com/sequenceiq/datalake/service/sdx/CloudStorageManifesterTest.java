@@ -76,7 +76,7 @@ public class CloudStorageManifesterTest {
         CloudStorageRequest cloudStorageConfigReq = underTest.initCloudStorageRequest("AWS", exampleBlueprintName, sdxCluster, sdxClusterRequest);
         assertEquals(1, cloudStorageConfigReq.getLocations().size());
         StorageLocationBase singleRequest = cloudStorageConfigReq.getLocations().iterator().next();
-        assertEquals(CloudStorageCdpService.RANGER_ADMIN.name(), singleRequest.getType());
+        assertEquals(CloudStorageCdpService.RANGER_ADMIN, singleRequest.getType());
         assertEquals("ranger/example-path", singleRequest.getValue());
 
     }
